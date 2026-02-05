@@ -22,27 +22,29 @@ public class OrderProcessed {
         // define the properties
         List<String> lookUp = new ArrayList<>();
         try{
-            BufferedReader br = new BufferedReader(new FileReader(FileConfig.INVENTORY_FILE));
-            String headerLine = br.readLine();
-            // define the condition
-            if(headerLine == null){
-                return lookUp;
-            }
-            String[] headers = headerLine.split(",");
-            int idIdx = findColumnIdx(headers, FileConfig.COL_PRODUCT_ID);
-            String line;
-            // define the while loop
-            while((line = br.readLine())!=null){
-                String[] cols = parseCSVLine(line);
+            try (BufferedReader br = new BufferedReader(new FileReader(FileConfig.INVENTORY_FILE))) {
+                String headerLine = br.readLine();
                 // define the condition
-                if(idIdx != -1 && cols.length > idIdx){
-                    lookUp.add(cols[idIdx].trim());
+                if(headerLine == null){
+                    return lookUp;
+                }
+                String[] headers = headerLine.split(",");
+                int idIdx = findColumnIdx(headers, FileConfig.COL_PRODUCT_ID);
+                String line;
+                // define the while loop
+                while((line = br.readLine())!=null){
+                    String[] cols = parseCSVLine(line);
+                    // define the condition
+                    if(idIdx != -1 && cols.length > idIdx){
+                        lookUp.add(cols[idIdx].trim());
+                    }
                 }
             }
         }
         catch(IOException ex){
             ex.getMessage();
         }
+    
         return lookUp;
     }
 
@@ -54,31 +56,34 @@ public class OrderProcessed {
         Files.createDirectories(Paths.get(FileConfig.OUTPUT_DIR));
 
         try{
-            BufferedReader br = new BufferedReader(new FileReader(FileConfig.ORDERS_FILE));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.UPDATED_ORDERS));
-            String headerLine = br.readLine();
-            if(headerLine == null){
-                return ;
-            }
-            String[] header = parseCSVLine(headerLine);
-            int idIdx = findColumnIdx(header, FileConfig.COL_PRODUCT_ID);
-            int catIdx = findColumnIdx(header, FileConfig.COL_CATAGORY);
-            String line;
-            bw.write(generateLine(header, catIdx));
-            bw.newLine();
+            try (BufferedReader br = new BufferedReader(new FileReader(FileConfig.ORDERS_FILE))) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.UPDATED_ORDERS))) {
+                    String headerLine = br.readLine();
+                    if(headerLine == null){
+                        return ;
+                    }
+                    String[] header = parseCSVLine(headerLine);
+                    int idIdx = findColumnIdx(header, FileConfig.COL_PRODUCT_ID);
+                    int catIdx = findColumnIdx(header, FileConfig.COL_CATAGORY);
+                    String line;
+                    bw.write(generateLine(header, catIdx));
+                    bw.newLine();
 
-            // define the while loop
-            while((line = br.readLine())!= null){
-                String[] col = parseCSVLine(line);
-                // define the condition
-                if(idIdx != -1 && idIdx < col.length){
-                    int randomIndex = random.nextInt(list.size());
-                    String newId = list.get(randomIndex);
-                    col[idIdx] = newId;
+                    // define the while loop
+                    while((line = br.readLine())!= null){
+                        String[] col = parseCSVLine(line);
+                        // define the condition
+                        if(idIdx != -1 && idIdx < col.length){
+                            int randomIndex = random.nextInt(list.size());
+                            String newId = list.get(randomIndex);
+                            col[idIdx] = newId;
+                        }
+                        bw.write(generateLine(col, catIdx));
+                        bw.newLine();
+                    }
                 }
-                bw.write(generateLine(col, catIdx));
-                bw.newLine();
             }
+            
         }
         catch(IOException ex){
             ex.getMessage();
