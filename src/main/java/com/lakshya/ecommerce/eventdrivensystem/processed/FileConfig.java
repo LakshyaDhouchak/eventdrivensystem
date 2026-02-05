@@ -6,7 +6,7 @@ public class FileConfig {
     // define the properties
     public static final String INPUT_DIR = "input";
     public static final String OUTPUT_DIR = "output";
-    public static final String INVENTORY_FILE = INPUT_DIR + File.separator + "ecommerce_datasets.csv";
+    public static final String INVENTORY_FILE = INPUT_DIR + File.separator + "ecommerce_dataset.csv";
     public static final String ORDERS_FILE = INPUT_DIR + File.separator + "products.csv";
     public static final String UPDATED_ORDERS = OUTPUT_DIR + File.separator +"ecommerce_final_datasets.csv";
 
