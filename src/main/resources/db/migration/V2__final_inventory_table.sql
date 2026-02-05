@@ -1,0 +1,16 @@
+-- define the inventory table
+CREATE TABLE IF NOT EXISTS inventory(
+    product_id VARCHAR(100) PRIMARY KEY,
+    category VARCHAR(255) NOT NULL,
+    product_title VARCHAR(500) NOT NULL,
+    product_description TEXT,
+    brand VARCHAR(255),
+    pack_size_quantity INT ,
+    mrp DECIMAL(10,2),
+    price DECIMAL(10,2) NOT NULL,
+    stock_quantity INT NOT NULL,
+    crawl_timestamp TIMESTAMP,
+    version BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
