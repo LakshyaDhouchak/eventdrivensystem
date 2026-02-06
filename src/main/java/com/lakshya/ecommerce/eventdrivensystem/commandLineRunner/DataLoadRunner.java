@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DataLoadRunner implements CommandLineRunner{
     // define the properties
-    private InventoryServiceInterface inventoryServiceInterface;
+    private final InventoryServiceInterface inventoryServiceInterface;
     @Override
     public void run(String... args) throws Exception {
-        inventoryServiceInterface.ingectCsv(FileConfig.INVENTORY_FILE);
+        inventoryServiceInterface.ingectCsv(FileConfig.ORDERS_FILE);
     }
     
 }

@@ -22,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InventoryIngestionService implements InventoryServiceInterface{
     // define the properties
-    private InventoryStagingRepository inventoryStagingRepo;
-    private InventoryRepository inventoryRepo;
+    private final InventoryStagingRepository inventoryStagingRepo;
+    private final InventoryRepository inventoryRepo;
 
     // define the helper class
     private InventoryCsvRow mapInventoryCsvRow(String[] cols){
@@ -54,6 +54,7 @@ public class InventoryIngestionService implements InventoryServiceInterface{
                 .category(dto.getProductCategory())
                 .productDescription(dto.getProductDescription())
                 .packSizeQuantity(dto.getStockQuantity())
+                .price(new BigDecimal(dto.getPrice()))
                 .sourceSystem("Kaggke")
                 .build();
     }
@@ -61,7 +62,7 @@ public class InventoryIngestionService implements InventoryServiceInterface{
     private boolean isDataSecureAndValid(InventoryCsvRow dto){
         try{
             // define the condition
-            if(dto.getProductId() == null || dto.getProductId().isBlank() ){
+            if(dto.getProductId() == null || dto.getProductId().isBlank() || dto.getPrice() == null){
                 return false;
             }
             BigDecimal price = new BigDecimal(dto.getPrice());
