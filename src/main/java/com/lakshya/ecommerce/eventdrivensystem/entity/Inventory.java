@@ -34,8 +34,6 @@ public class Inventory {
     @Column(name = "pack_size_quantity")
     private Integer packSizeQuantity;
 
-    private BigDecimal mrp;
-
     @Column(nullable = false)
     private BigDecimal price;
 
