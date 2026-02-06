@@ -8,4 +8,6 @@ import com.lakshya.ecommerce.eventdrivensystem.entity.Inventory;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory , String> {
     
+    void aggregateAndMerge();
+    
 }
