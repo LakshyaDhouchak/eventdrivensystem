@@ -10,7 +10,7 @@ public class InventoryCsvRow {
     private String productCategory;
     private String productDescription;
     private String price;
-    private String StockQuantity;
+    private Integer StockQuantity;
     private String warrantyPeriod;
     private String ProductDimensions;
     private String manufacturingDate;
