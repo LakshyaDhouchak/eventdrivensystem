@@ -20,10 +20,7 @@ public class InventoryStaging {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staging_id")
-    private Long stagingId; 
-
-    @Column(name = "source_index")
-    private Integer sourceIndex; 
+    private Long stagingId;  
 
     @Column(name = "uniq_id", length = 100)
     private String uniqId;
@@ -40,20 +37,11 @@ public class InventoryStaging {
     @Column(name = "product_description", columnDefinition = "TEXT")
     private String productDescription;
 
-    @Column(name = "brand")
-    private String brand;
-
     @Column(name = "pack_size_quantity")
     private Integer packSizeQuantity;
 
-    @Column(name = "mrp")
-    private BigDecimal mrp;
-
     @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "ingestion_time", insertable = false, updatable = false)
-    private LocalDateTime ingestionTime;
 
     @Column(name = "source_system")
     @Builder.Default
