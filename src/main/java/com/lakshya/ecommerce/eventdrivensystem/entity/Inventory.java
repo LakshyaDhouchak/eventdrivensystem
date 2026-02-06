@@ -45,7 +45,7 @@ public class Inventory {
     @Column(name = "crawl_timestamp")
     private LocalDateTime crawlTimestamp;
 
-    // We removed the @Version field as per your requirement
+    
 
     @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
