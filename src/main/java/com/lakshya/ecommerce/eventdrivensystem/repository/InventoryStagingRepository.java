@@ -11,8 +11,6 @@ import com.lakshya.ecommerce.eventdrivensystem.entity.InventoryStaging;
 @Repository
 public interface InventoryStagingRepository extends JpaRepository<InventoryStaging , Long> {
 
-    void saveAll(List<InventoryStaging> batch);
-
     void deleteByPriceLessThanEqual(BigDecimal zero);
     
 }
