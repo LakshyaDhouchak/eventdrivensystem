@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS inventory_staging(
     category VARCHAR(255),
     product_description TEXT,
     pack_size_quantity INT,
-    mrp DECIMAL(10,2),
     price DECIMAL(10,2),
     ingestion_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     source_system VARCHAR(50) DEFAULT 'KAGGLE'
