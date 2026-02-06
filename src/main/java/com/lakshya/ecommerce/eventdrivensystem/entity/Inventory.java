@@ -30,7 +30,6 @@ public class Inventory {
     @Column(name = "product_description", columnDefinition = "TEXT")
     private String productDescription;
 
-    private String brand;
 
     @Column(name = "pack_size_quantity")
     private Integer packSizeQuantity;
