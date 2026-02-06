@@ -108,7 +108,7 @@ public class InventoryIngestionService implements InventoryServiceInterface{
                 inventoryStagingRepo.saveAll(batch);
                 batch.clear();
             }
-            
+            processAndMerge();
         }
         catch(IOException ex){
             ex.getMessage();
@@ -123,6 +123,9 @@ public class InventoryIngestionService implements InventoryServiceInterface{
 
         // step 2: now we merge duplicate entry and send data to new final inventory database
         inventoryRepo.aggregateAndMerge();
+
+        // step 3: once done then truncate the inventrystaging
+        inventoryRepo.truncateStaging();
     }
 
 
