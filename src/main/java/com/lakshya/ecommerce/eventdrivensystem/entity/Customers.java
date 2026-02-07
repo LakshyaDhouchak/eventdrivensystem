@@ -1,5 +1,7 @@
 package com.lakshya.ecommerce.eventdrivensystem.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -34,7 +36,7 @@ public class Customers {
     private String ageGroup;
 
     @Column(name = "signup_date")
-    private String signupDate;
+    private LocalDate signupDate;
 
     @Column(name = "country")
     private String country;
