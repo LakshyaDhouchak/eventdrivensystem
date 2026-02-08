@@ -5,5 +5,5 @@ import com.lakshya.ecommerce.eventdrivensystem.dto.OrderCustomerProductReviewPar
 public interface OrderServiceInterface {
     // define the methord
     void ingestOrder(OrderCustomerProductReviewParsedDTO dto);
-    void simulate(String filePath);
+    void simulate(String filePath) throws InterruptedException;
 }

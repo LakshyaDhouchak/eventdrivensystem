@@ -1,35 +1,19 @@
 package com.lakshya.ecommerce.eventdrivensystem.service;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
-
 import com.lakshya.ecommerce.eventdrivensystem.dto.OrderCustomerProductReviewParsedDTO;
-import com.lakshya.ecommerce.eventdrivensystem.entity.Customers;
-import com.lakshya.ecommerce.eventdrivensystem.entity.OrderItems;
-import com.lakshya.ecommerce.eventdrivensystem.entity.Orders;
-import com.lakshya.ecommerce.eventdrivensystem.entity.Products;
-import com.lakshya.ecommerce.eventdrivensystem.entity.Reviews;
-import com.lakshya.ecommerce.eventdrivensystem.repository.CustomersRepository;
-import com.lakshya.ecommerce.eventdrivensystem.repository.OrderItemsRepository;
-import com.lakshya.ecommerce.eventdrivensystem.repository.OrderRepository;
-import com.lakshya.ecommerce.eventdrivensystem.repository.ProductsRepository;
-import com.lakshya.ecommerce.eventdrivensystem.repository.ReviewsRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OrderIngestionService implements OrderServiceInterface {
-    // define the properties
-    private final CustomersRepository customersRepo;
-    private final OrderRepository orderRepo;
-    private final OrderItemsRepository orderItemsRepo;
-    private final ProductsRepository productsRepo;
-    private final ReviewsRepository reviewsRepo;
-
 
     // define the helper class
     private OrderCustomerProductReviewParsedDTO mapToCsvDTO(String[] columns){
@@ -56,64 +40,33 @@ public class OrderIngestionService implements OrderServiceInterface {
                 .build();
     }
 
-    private Customers mapToCustomerEntity(OrderCustomerProductReviewParsedDTO dto){
-        return Customers.builder()
-                .customerId(Long.valueOf(dto.getCustomerId()))
-                .firstName((dto.getFirstName()))
-                .lastName((dto.getLastName()))
-                .gender(dto.getGender())
-                .ageGroup(dto.getAgeGroup())
-                .signupDate(dto.getSignupDate())
-                .country(dto.getCountry())
-                .build();
-    }
-
-    private Products mapToProductEntity(OrderCustomerProductReviewParsedDTO dto){
-        return Products.builder()
-                .productId(Long.valueOf(dto.getProductId()))
-                .productName(dto.getProductName())
-                .category(dto.getCategory())
-                .unitPrice(dto.getUnitPrice())
-                .build();
-    }
-
-    private Orders mapToOrdersEntity(OrderCustomerProductReviewParsedDTO dto){
-        return Orders.builder()
-                .orderId(Long.valueOf(dto.getOrderId()))
-                .customerId(Long.valueOf(dto.getCustomerId()))
-                .orderDate(dto.getOrderDate())
-                .orderStatus(dto.getOrderStatus())
-                .build();
-    }
-
-    private OrderItems mapToOrderItemsEntity(OrderCustomerProductReviewParsedDTO dto){
-        return OrderItems.builder()
-                .orderId(Long.valueOf(dto.getOrderId()))
-                .productId(Long.valueOf(dto.getProductId()))
-                .quantity(dto.getQuantity())
-                .unitPrice(dto.getUnitPrice())
-                .build();
-    }
-
-    private Reviews mapToReviewsEntity(OrderCustomerProductReviewParsedDTO dto){
-        return Reviews.builder()
-                .reviewId(Long.valueOf(dto.getReviewId()))
-                .orderId(Long.valueOf((dto.getOrderId())))
-                .customerId(Long.valueOf(dto.getCustomerId()))
-                .productId(Long.valueOf(dto.getProductId()))
-                .rating(dto.getRating())
-                .reviewText(dto.getReviewText())
-                .reviewDate(dto.getReviewDate())
-                .build();
-    }
     @Override
     public void ingestOrder(OrderCustomerProductReviewParsedDTO dto) {
         
     }
 
     @Override
-    public void simulate(String filePath) {
-        
+    public void simulate(String filePath) throws InterruptedException {
+        try{
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                br.readLine();
+                String line;
+
+                // define the condition
+                while((line = br.readLine()) != null){
+                    String[] columns = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                    OrderCustomerProductReviewParsedDTO dto = mapToCsvDTO(columns);
+
+                    // calling the ingestOrder() methord
+                    ingestOrder(dto);
+                    Thread.sleep(200);
+                }
+            }
+
+        }
+        catch(IOException ex){
+            throw new RuntimeException("Error reading CSV file: " + filePath, ex);
+        }
     }
     
 }
